@@ -83,3 +83,7 @@ h1 {
 #clear, #gameOver {
   display: none;
 }
+
+#shakeAgain {
+  display: none;
+}

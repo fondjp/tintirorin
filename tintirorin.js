@@ -171,6 +171,11 @@ window.addEventListener("load", function () {
         pips = [];
         times++;
 
+        if (tintirorinCounter === 0 && menashi < 3) {
+          var shakeAgain = document.getElementById("shakeAgain");
+          shakeAgain.style.display = "block";
+        } // どうにかならんか〜
+
       };
 
       calcResult(storm, hand, shigoro, hihumi, menashi);
@@ -203,7 +208,6 @@ window.addEventListener("load", function () {
       isWon.innerHTML = "あなたの負けです…";
     }
 
-    console.log(myResult, enemyResult, coin, betCoin);
     coin = battle(myResult, enemyResult, coin, betCoin); // コインのみ返す
 
     myResult = 0;
