@@ -8,10 +8,10 @@
 }
 
 body {
-background-image: url("./nc71090.png");
+  background-image: url("./nc71090.png");
 }
 
-#square {
+#base {
   width: 950px;
   height: 875px;
   background: rgba(255, 128, 0, 0.75);
@@ -23,12 +23,63 @@ h1 {
   color: #ff0000;
   -webkit-text-stroke-color: #ffffff;
   -webkit-text-stroke-width: 1px;
+  padding-top: 20px;
+  font-size: 50px;
 }
 
-p {
+#gameBoard {
+  width: 700px;
+  height: 450px;
+  margin-top: 20px;
+  border: 3px solid green;
+  background-color:#ffffff;
+  border-radius: 20px 20px 0 0;
+}
+
+#myCoin {
+  margin-top: 5px;
+  font-size: 40px;
+  font-family: "けいふぉんと";
+  color: #ffff00;
+  -webkit-text-stroke-color: #000000;
+  -webkit-text-stroke-width: 2px;
+}
+
+#coinBoard {
+  margin-top: -10px;
+  width: 700px;
+  height: 100px;
+  border: 3px solid green;
+  background-color:#ffffff;
+  border-radius: 0 0 20px 20px;
+}
+
+#bet {
+  margin-top: 25px;
+  font-size: 50px;
+  font-family: "けいふぉんと";
+  color: #ffff00;
+  -webkit-text-stroke-color: #000000;
+  -webkit-text-stroke-width: 3px;
+}
+
+#betCoin {
+  padding-top: 10px;
+  font-size: 30px;
+  height: 50px;
+  width: 300px;
+  font-family: "けいふぉんと";
+  color: #0000ff;
+  -webkit-text-stroke-color: #000000;
+  -webkit-text-stroke-width: 0px;
+}
+
+#errorLog {
   display: inline-block;
   text-align: left;
   color: #ff0000;
-  -webkit-text-stroke-color: #000;
-  -webkit-text-stroke-width: 1px;
+}
+
+#clear, #gameOver {
+  display: none;
 }

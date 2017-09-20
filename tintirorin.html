@@ -7,16 +7,36 @@
     <title>フォンドのチンチロリン</title>
   </head>
   <body>
-    <div id="square">
-      <h1>チンチロリン</h1>
-      <p id="myCoin"></p>
-      <p id="output"></p>
-      <p id="pipsResult"></p>
-      <p id="myHand"></p>
-      <p id="enemyHand"></p>
-      <p id="isWon"></p>
-      <p id="again"></p>
-      <p>賭け金：<input type="text" id="betCoin" value=""></p>
+    <div id="base">
+      <h1>あっとうてきチンチロリンッ！</h1>
+      <div id="gameBoard">
+        <p id="myCoin"></p>
+        <p id="output"></p>
+
+        <p id="howManyTimes"></p>
+        
+        <p id="myPipsResultFirst"></p>
+        <p id="myPipsResultSecond"></p>
+        <p id="myPipsResultThird"></p>
+
+        <p id="enemyPipsResultFirst"></p>
+        <p id="enemyPipsResultSecond"></p>
+        <p id="enemyPipsResultThird"></p>
+        
+        <p id="myHand"></p>
+        <p id="enemyHand"></p>
+        <p id="isWon"></p>
+        <p id="again"></p>
+        <p id="errorLog"></p>
+
+        <img src="./HANCHO.jpg" id="clear">
+        <img src="./HANCHO2.jpg" id="gameOver">
+      </div>
+
+      <div id="coinBoard">
+        <p id="bet">賭け金：<input type="text" id="betCoin" value=""> ペリカ</p>
+      </div>
+      
       <button  id="start">スタート！</button>
     </div>
   </body>
