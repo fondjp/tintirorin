@@ -45,8 +45,18 @@ h1 {
   -webkit-text-stroke-width: 2px;
 }
 
+#whiteBoard {
+  position: relative;
+  top: -350px;
+  width: 500px;
+  height: 350px;
+  background-color:#ffffff;
+}
+
 #coinBoard {
-  margin-top: -10px;
+  position: relative;
+  top: -316px;
+  right: 2.5px;
   width: 700px;
   height: 100px;
   border: 3px solid green;
@@ -81,10 +91,29 @@ h1 {
   color: #ff0000;
 }
 
-#clear, #gameOver {
+#clear {
+  display: none;
+}
+
+#gameOver {
   display: none;
 }
 
 #shakeAgain {
   display: none;
+}
+
+#myTurnEnd {
+  display: none;
+}
+
+#playerHand {
+  font-size: 50px;
+  font-weight: bold;
+  -webkit-writing-mode: vertical-rl;
+  -ms-writing-mode: tb-rl;
+  writing-mode: vertical-rl;
+  margin-top: 25px;
+  margin-left: -26px;
+  line-height: 250%;
 }

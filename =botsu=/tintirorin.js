@@ -4,12 +4,67 @@ window.addEventListener("load", function () {
   var myResult = 0;
   var enemyResult = 0;
 
+  function myTurn() {
+
+    var candidateHand = [0, 0, 0, 0, 0];
+    var times = 1;
+    var tintirorinCounter = 0;
+
+    candidateHand = shake(candidateHand, times, tintirorinCounter);
+    pushResult(candidateHand, tintirorinCounter);
+    if (candidateHand[4] === 1) {
+      let shakeAgain = document.getElementById("shakeAgain");
+      shakeAgain.style.display = "block";
+      times++;
+      shakeAgain.addEventListener("click", function () {
+        shakeAgain.style.display = "none";
+        candidateHand = shake(candidateHand, times, tintirorinCounter);
+        pushResult(candidateHand, tintirorinCounter);
+        if (candidateHand[4] === 2) {
+          shakeAgain.style.display = "block";
+          times++;
+          shakeAgain.addEventListener("click", function () {
+            shakeAgain.style.display = "none";
+            candidateHand = shake(candidateHand, times, tintirorinCounter);
+            pushResult(candidateHand, tintirorinCounter);
+            if(candidateHand[4] === 3) {
+              return;
+            }
+          });
+        }
+      });
+    }
+  }
+
+  function enemyTurn() {
+    var candidateHand = [0, 0, 0, 0, 0];
+    var times = 1;
+    var tintirorinCounter = 1;
+    var allResult;
+
+    candidateHand = shake(candidateHand, times, tintirorinCounter);
+    allResult = pushResult(candidateHand, tintirorinCounter);
+    if (candidateHand[4] === 1) {
+      times++;
+      candidateHand = shake(candidateHand, times, tintirorinCounter);
+      allResult = pushResult(candidateHand, tintirorinCounter);
+      if (candidateHand[4] === 2) {
+        times++;
+        candidateHand = shake(candidateHand, times, tintirorinCounter);
+        allResult = pushResult(candidateHand, tintirorinCounter);
+      }
+    }
+    console.log("function enemyTurn gets allResult -> " + allResult[0] + ", " + allResult[1]);
+    return allResult;
+
+  }
+
 
   function shake(candidateHand, times, tintirorinCounter) {
 
     var pips = [];
 
-    howManyTimes.innerHTML += times + "回目";
+    howManyTimes.innerHTML = times + "回目";
 
     for (var i = 0; i < 3; i++) { // 3つのサイコロを振って
       pips.push(Math.floor(Math.random() * 6) + 1); // 配列の中に結果を入れる
@@ -32,7 +87,7 @@ window.addEventListener("load", function () {
     });
 
     console.log(pips);
-
+    
     if (pips[0] === pips[2]) { // 0番目と2番目が同じ。それすなわち1番目も同じ！！
 
       if (tintirorinCounter === 0) {
@@ -40,9 +95,8 @@ window.addEventListener("load", function () {
       } else {
         enemyHand.innerHTML = pips[0] + "ゾロ";
       }
-
       candidateHand[4] = 4;
-      candidateHand[0] = pips[0];
+      candidateHand[0] = 1;
       return candidateHand;
 
     }
@@ -119,15 +173,15 @@ window.addEventListener("load", function () {
 
     var point = 0;
 
-    if (candidateHand[4] <= 3) { // １回しか振っていないため(candidateHand[4] === 3)だとバグる。完成したら戻す
+    if (candidateHand[4] === 3) {
       point = 1;
     }
 
-    if (candidateHand[0] > 0) {
-      point = candidateHand[0] * 10000;
+    if (candidateHand[0]) {
+      point = 10000;
     }
 
-    if (candidateHand[1] > 0) {
+    if (candidateHand[1]) {
       point = candidateHand[1] * 100;
     }
 
@@ -144,6 +198,7 @@ window.addEventListener("load", function () {
   }
 
   function battle(myResult, enemyResult, coin, betCoin) {
+
     var bairitsu = 1;
 
     if (myResult === enemyResult) {
@@ -172,50 +227,46 @@ window.addEventListener("load", function () {
       bairitsu *= -1;
     }
 
+    console.log("***debug*** 倍率 is -> " + bairitsu);
+
     if (bairitsu === -1) {
-      return coin -= betCoin;
+      coin -= betCoin;
     } else {
-      return coin += betCoin * bairitsu;
+      coin += betCoin * bairitsu;
     }
+    return coin;
   }
 
-  function tintirorin(coin, betCoin) {
-    var tintirorinCounter = 0;
-    while (tintirorinCounter < 2) {
+  function pushResult(candidateHand, tintirorinCounter) {
 
-      // storm, hand, shigoro, hihumi, menashi;
-      var candidateHand = [0, 0, 0, 0, 0];
-
-      var times = 1; // 回数表示
-
-      // ここから未完成
-
-      shake(candidateHand, times, tintirorinCounter);
-      console.log(candidateHand);
-
-      // ここまで未完成
-
-      var result = calcResult(candidateHand);
-
-      if (!myResult) {
-        myResult = result;
-        result = 0; // 結果の初期化
-      } else {
-        enemyResult = result;
-        result = 0; // 一応
-      }
-
-      tintirorinCounter++;
-      times = 1;
-
+    if (tintirorinCounter === 0 && candidateHand[0] === 0 && candidateHand[1] === 0 && candidateHand[2] === 0 && candidateHand[3] === 0) {
+      if (candidateHand[4] !== 3) {
+        return;
+      } // 目無しでまだ３回振ってない場合はお帰りいただく。
     }
 
-    if (myResult % 10000 === 0 && myResult >= 20000) {
-      myResult = 10000; // 今回はピンゾロも倍率は同じであるため、直す
+    var result = calcResult(candidateHand);
+
+    if (tintirorinCounter === 0) {
+      myResult = result;
+      result = 0; // 結果の初期化
+    } else {
+      enemyResult = result;
+      result = 0; // 一応
     }
-    if (enemyResult % 10000 === 0 && enemyResult >= 20000) {
-      enemyResult = 10000;
+
+    if (tintirorinCounter === 1) { // 相手の手が入ってきたら終わり！閉廷！
+      var allResult = [myResult, enemyResult];
+      console.log("It's ready. myResult is -> " + myResult + ", enemyResult is -> " + enemyResult);
+      return allResult;
+    } else {
+      console.log("It's ready. myResult is -> " + myResult);
+      return;
     }
+
+  }
+
+  function payout(myResult, enemyResult, coin, betCoin) {
 
     if (myResult > enemyResult) {
       isWon.innerHTML = "あなたの勝ちです！";
@@ -225,6 +276,7 @@ window.addEventListener("load", function () {
       isWon.innerHTML = "あなたの負けです…";
     }
 
+    console.log(myResult, enemyResult, coin, betCoin);
     coin = battle(myResult, enemyResult, coin, betCoin); // コインのみ返す
 
     myResult = 0;
@@ -249,16 +301,14 @@ window.addEventListener("load", function () {
     var enemyPipsResultFirst = document.getElementById("enemyPipsResultFirst");
     var enemyPipsResultSecond = document.getElementById("enemyPipsResultSecond");
     var enemyPipsResultThird = document.getElementById("enemyPipsResultThird");
+    betCoin = parseInt(betCoin);
 
-    betCoin = Number(betCoin);
     if (coin <= 0 || coin >= 50000000000000000) {
-
       if (coin <= 0) {
         document.getElementById("gameOver").style.display = "block";
       } else {
         document.getElementById("clear").style.display = "block";
       }
-
     } else if (coin - betCoin < 0) {
       errorLog.innerHTML = "金額が不足しています。";
     } else if (isNaN(betCoin) || betCoin <= 0) {
@@ -275,9 +325,37 @@ window.addEventListener("load", function () {
       myHand.innerHTML = "";
       enemyHand.innerHTML = "";
       isWon.innerHTML = "";
-      errorLog = "";
-      coin = tintirorin(coin, betCoin);
-      myCoin.innerHTML = "現在の所持金：" + coin + "ペリカ";
+      errorLog.innerHTML = "";
+
+      console.log("GAME START!")
+      var start = document.getElementById("start");
+      start.style.display = "none";
+
+      myTurn();
+
+      var myTurnEnd = document.getElementById("myTurnEnd");
+      myTurnEnd.style.display = "block";
+
+      myTurnEnd.addEventListener("click", function () {
+        shakeAgain.style.display = "none";
+        myTurnEnd.style.display = "none";
+        console.log('callenemyTurn')
+        var allResult = enemyTurn();
+
+        myResult = allResult[0];
+        enemyResult = allResult[1];
+
+        coin = payout(myResult, enemyResult, coin, betCoin);
+
+        var myResult = 0;
+        var enemyResult = 0;
+        var allResult;
+        var tintirorinCounter = 0;
+        var candidateHand = [0, 0, 0, 0, 0];
+        myCoin.innerHTML = "現在の所持金：" + coin + "ペリカ";
+        start.style.display = "block";
+
+      })
     }
   })
 
