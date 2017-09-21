@@ -3,30 +3,143 @@ window.addEventListener("load", function () {
   var coin = 1000;
   var myResult = 0;
   var enemyResult = 0;
-  var result = 0;
-  function calcResult(storm, hand, shigoro, hihumi, menashi) {
 
-    if (storm > 0) {
-      result = storm * 10000;
+
+  function shake(candidateHand, times, tintirorinCounter) {
+
+    var pips = [];
+
+    howManyTimes.innerHTML += times + "回目";
+
+    for (var i = 0; i < 3; i++) { // 3つのサイコロを振って
+      pips.push(Math.floor(Math.random() * 6) + 1); // 配列の中に結果を入れる
+    };
+
+    if (tintirorinCounter === 0) {
+      myPipsResultFirst.innerHTML = pips[0];
+      myPipsResultSecond.innerHTML = pips[1];
+      myPipsResultThird.innerHTML = pips[2];
+    } else {
+      enemyPipsResultFirst.innerHTML = pips[0];
+      enemyPipsResultSecond.innerHTML = pips[1];
+      enemyPipsResultThird.innerHTML = pips[2];
     }
 
-    if (hand > 0) {
-      result = hand * 100;
+    pips.sort(function (a, b) { // その三つの数字を小さい順に並べる
+      if (a < b) return -1;
+      if (a > b) return 1;
+      return 0;
+    });
+
+    console.log(pips);
+
+    if (pips[0] === pips[2]) { // 0番目と2番目が同じ。それすなわち1番目も同じ！！
+
+      if (tintirorinCounter === 0) {
+        myHand.innerHTML = pips[0] + "ゾロ";
+      } else {
+        enemyHand.innerHTML = pips[0] + "ゾロ";
+      }
+
+      candidateHand[4] = 4;
+      candidateHand[0] = pips[0];
+      return candidateHand;
+
     }
 
-    if (shigoro) {
-      result = 9999;
+    if (pips[0] === pips[1]) {
+
+      if (tintirorinCounter === 0) {
+        myHand.innerHTML = pips[2] + "の出目";
+      } else {
+        enemyHand.innerHTML = pips[2] + "の出目";
+      }
+
+      candidateHand[4] = 4;
+      candidateHand[1] = pips[2];
+      return candidateHand;
+
+    } else if (pips[1] === pips[2]) {
+
+      if (tintirorinCounter === 0) {
+        myHand.innerHTML = pips[0] + "の出目";
+      } else {
+        enemyHand.innerHTML = pips[0] + "の出目";
+      }
+
+      candidateHand[4] = 4;
+      candidateHand[1] = pips[0];
+      return candidateHand;
+
     }
 
-    if (hihumi) {
-      result = -1230;
+    if (pips[0] === 4 && pips[1] === 5 && pips[2] === 6) {
+
+      if (tintirorinCounter === 0) {
+        myHand.innerHTML = "シゴロ";
+      } else {
+        enemyHand.innerHTML = "シゴロ";
+      }
+
+      candidateHand[4] = 4;
+      candidateHand[2] = 1;
+      return candidateHand;
+
     }
 
-    if (menashi === 3) {
-      result = 1;
+    if (pips[0] === 1 && pips[1] === 2 && pips[2] === 3) {
+
+      if (tintirorinCounter === 0) {
+        myHand.innerHTML = "ヒフミ";
+      } else {
+        enemyHand.innerHTML = "ヒフミ";
+      }
+
+      candidateHand[4] = 4;
+      candidateHand[3] = 1;
+      return candidateHand;
+
     }
 
-    return result;
+    if (pips[0] !== pips[1] && pips[1] !== pips[2]) {
+
+      if (tintirorinCounter === 0) {
+        myHand.innerHTML = "目なし";
+      } else {
+        enemyHand.innerHTML = "目なし";
+      }
+
+      candidateHand[4]++;
+      return candidateHand;
+    }
+
+  }
+
+  function calcResult(candidateHand) {
+
+    var point = 0;
+
+    if (candidateHand[4] <= 3) { // １回しか振っていないため(candidateHand[4] === 3)だとバグる。完成したら戻す
+      point = 1;
+    }
+
+    if (candidateHand[0] > 0) {
+      point = candidateHand[0] * 10000;
+    }
+
+    if (candidateHand[1] > 0) {
+      point = candidateHand[1] * 100;
+    }
+
+    if (candidateHand[2]) {
+      point = 9999;
+    }
+
+    if (candidateHand[3]) {
+      point = -1230;
+    }
+
+    return point;
 
   }
 
@@ -49,6 +162,10 @@ window.addEventListener("load", function () {
       bairitsu *= 2;
     }
 
+    if (bairitsu === 6 && myResult - enemyResult === 1 || enemyResult - myResult === 1) {
+      bairitsu = 1.5; // 現在どちらかがゾロ目を出し、かつどちらかにヒフミが出ていない（シゴロの）場合
+    }
+
     if (myResult > enemyResult) {
       bairitsu *= 1;
     } else if (myResult < enemyResult) {
@@ -66,119 +183,19 @@ window.addEventListener("load", function () {
     var tintirorinCounter = 0;
     while (tintirorinCounter < 2) {
 
-      var pips = [];
-      var storm = 0; // アラシを直訳ｗｗ　3つの目が同じだった時、その数字を値にして返す
-      var hand = 0;
-      var shigoro = 0; // まんま
-      var hihumi = 0; // まんま
-      var menashi = 0; // まんま
+      // storm, hand, shigoro, hihumi, menashi;
+      var candidateHand = [0, 0, 0, 0, 0];
+
       var times = 1; // 回数表示
 
-      while (menashi < 3) {
+      // ここから未完成
 
-        howManyTimes.innerHTML += times + "回目";
+      shake(candidateHand, times, tintirorinCounter);
+      console.log(candidateHand);
 
-        for (var i = 0; i < 3; i++) { // 3つのサイコロを振って
-          pips.push(Math.floor(Math.random() * 6) + 1); // 配列の中に結果を入れる
-        };
+      // ここまで未完成
 
-        if (tintirorinCounter === 0) {
-          myPipsResultFirst.innerHTML = pips[0];
-          myPipsResultSecond.innerHTML = pips[1];
-          myPipsResultThird.innerHTML = pips[2];
-        } else {
-          enemyPipsResultFirst.innerHTML = pips[0];
-          enemyPipsResultSecond.innerHTML = pips[1];
-          enemyPipsResultThird.innerHTML = pips[2];
-        }
-
-        pips.sort(function (a, b) { // その三つの数字を小さい順に並べる
-          if (a < b) return -1;
-          if (a > b) return 1;
-          return 0;
-        });
-
-        if (pips[0] !== pips[1] !== pips[2]) {
-          menashi++;
-
-          if (tintirorinCounter === 0) {
-            myHand.innerHTML = "目なし";
-          } else {
-            enemyHand.innerHTML = "目なし";
-          }
-
-        }
-
-        if (pips[0] === pips[2]) { // 0番目と2番目が同じ。それすなわち1番目も同じ！！
-          menashi = 4;
-          storm = pips[0];
-
-          if (tintirorinCounter === 0) {
-            myHand.innerHTML = pips[0] + "ゾロ";
-          } else {
-            enemyHand.innerHTML = pips[0] + "ゾロ";
-          }
-
-          break; // handの判定が引っかかるのでbreakで避難。一応専用のconsole.log()を追加。
-        }
-
-        if (pips[0] === pips[1]) {
-          menashi = 4;
-          hand = pips[2];
-
-          if (tintirorinCounter === 0) {
-            myHand.innerHTML = pips[2] + "の出目";
-          } else {
-            enemyHand.innerHTML = pips[2] + "の出目";
-          }
-
-        } else if (pips[1] === pips[2]) {
-          menashi = 4;
-          hand = pips[0];
-
-          if (tintirorinCounter === 0) {
-            myHand.innerHTML = pips[0] + "の出目";
-          } else {
-            enemyHand.innerHTML = pips[0] + "の出目";
-          }
-
-        }
-
-        if (pips[0] === 4 && pips[1] === 5 && pips[2] === 6) {
-          menashi = 4;
-          shigoro = 1;
-
-          if (tintirorinCounter === 0) {
-            myHand.innerHTML = "シゴロ";
-          } else {
-            enemyHand.innerHTML = "シゴロ";
-          }
-
-        }
-
-        if (pips[0] === 1 && pips[1] === 2 && pips[2] === 3) {
-          menashi = 4;
-          hihumi = 1;
-
-          if (tintirorinCounter === 0) {
-            myHand.innerHTML = "ヒフミ";
-          } else {
-            enemyHand.innerHTML = "ヒフミ";
-          }
-
-        }
-
-        pips = [];
-        times++;
-
-        if (tintirorinCounter === 0 && menashi < 3) {
-          var shakeAgain = document.getElementById("shakeAgain");
-          shakeAgain.style.display = "block";
-        } // どうにかならんか〜
-
-      };
-
-      calcResult(storm, hand, shigoro, hihumi, menashi);
+      var result = calcResult(candidateHand);
 
       if (!myResult) {
         myResult = result;
@@ -260,10 +277,10 @@ window.addEventListener("load", function () {
       isWon.innerHTML = "";
       errorLog = "";
       coin = tintirorin(coin, betCoin);
-      myCoin.innerHTML = "現在の所持金：" + coin;
+      myCoin.innerHTML = "現在の所持金：" + coin + "ペリカ";
     }
   })
 
-  myCoin.innerHTML = "現在の所持金：" + coin;
+  myCoin.innerHTML = "現在の所持金：" + coin + "ペリカ";
 
 });
