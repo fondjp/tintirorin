@@ -90,7 +90,7 @@ window.addEventListener("load", function () {
     var hand = [];
 
     if (pips[0] === pips[2]) {
-      return hand = ["zoro", 10000];
+      return hand = ["zoro", pips[0] * 10000];
     }
 
     if (pips[0] === pips[1]) {
@@ -116,6 +116,12 @@ window.addEventListener("load", function () {
   };
 
   function battle(myHand, enemyHand) {
+
+    if (myHand % 10000 === 0) {
+      myHand = 10000;
+    } else if (enemyHand % 10000 === 0) {
+      enemyHand = 10000;
+    }
 
     var magnification = -40; // 倍率
 
@@ -211,6 +217,41 @@ window.addEventListener("load", function () {
 
   };
 
+  function drawHand(isMyTurn, candidate) {
+
+    var hand = candidate[0];
+    var point = candidate[1];
+
+    var draw = "";
+
+    switch (hand) {
+      case "hifumi":
+        draw = "ヒフミ";
+        break;
+      case "shigoro":
+        draw = "シゴロ";
+        break;
+      case "zoro":
+        draw = (point / 10000) + "ゾロ";
+        break;
+      case "deme":
+        draw = point + "の出目";
+        break;
+      case "menashi":
+        draw = "目無し";
+        break;
+    }
+
+    if (isMyTurn === "myTurn") {
+      myHand.innerHTML = draw;
+    } else {
+      enemyHand.innerHTML = draw;
+    }
+
+    return;
+
+  }
+
   function myTurn() {
 
     return new Promise((resolve, reject) => {
@@ -231,7 +272,7 @@ window.addEventListener("load", function () {
           shakeAgain.style.display = "none";
           myTurnEnd.style.display = "block";
           myTurnEnd.addEventListener("click", () => {
-            myHand.innerHTML = myCandidate[0];
+            drawHand("myTurn", myCandidate);
             myTurnEnd.style.display = "none";
             resolve(myCandidate);
           })
@@ -248,7 +289,7 @@ window.addEventListener("load", function () {
               shakeAgain.style.display = "none";
               myTurnEnd.style.display = "block";
               myTurnEnd.addEventListener("click", () => {
-                myHand.innerHTML = myCandidate[0];
+                drawHand("myTurn", myCandidate);
                 myTurnEnd.style.display = "none";
                 resolve(myCandidate);
               })
@@ -262,7 +303,7 @@ window.addEventListener("load", function () {
                 myCandidate = shake("myTurn");
                 myTurnEnd.style.display = "block";
                 myTurnEnd.addEventListener("click", () => {
-                  myHand.innerHTML = myCandidate[0];
+                  drawHand("myTurn", myCandidate);
                   myTurnEnd.style.display = "none";
                   resolve(myCandidate);
                 });
@@ -304,13 +345,16 @@ window.addEventListener("load", function () {
                     .then(() => {
                       enemyHowManyTimes.innerHTML = "３回目";
                       enemyCandidate = shake("enemyTurn");
+                      drawHand("enemyTurn", enemyCandidate);
                       resolve(enemyCandidate);
                     });
                 } else {
+                  drawHand("enemyTurn", enemyCandidate);
                   resolve(enemyCandidate);
                 }
               });
           } else {
+            drawHand("enemyTurn", enemyCandidate);
             resolve(enemyCandidate);
           }
         });
@@ -322,13 +366,13 @@ window.addEventListener("load", function () {
   function game(coin, betCoin) {
     return new Promise(function (resolve, reject) {
       start.style.display = "none";
-      
+
       changeDice("myDice01", 7);
-      changeDice("myDice02",7);
-      changeDice("myDice03",7);
-      changeDice("enemyDice01",7);
-      changeDice("enemyDice02",7);
-      changeDice("enemyDice03",7);
+      changeDice("myDice02", 7);
+      changeDice("myDice03", 7);
+      changeDice("enemyDice01", 7);
+      changeDice("enemyDice02", 7);
+      changeDice("enemyDice03", 7);
 
       myTurn().then((myResult) => {
         myHand = myResult;
