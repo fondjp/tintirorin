@@ -2,6 +2,12 @@ var coin = 1000;
 
 window.addEventListener("load", function () {
 
+  var dices = ["./sai01.jpg", "./sai02.jpg", "./sai03.jpg", "./sai04.jpg", "./sai05.jpg", "./sai06.jpg", "./white.png"]
+
+  function changeDice(id, number) {
+    $("#" + id).attr("src", dices[number - 1]);
+  };
+
   var start = document.getElementById("start");
 
   start.addEventListener("click", function () {
@@ -191,13 +197,13 @@ window.addEventListener("load", function () {
     var pips = dice();
 
     if (isMyTurn === "myTurn") {
-      myPipsResultFirst.innerHTML = pips[0];
-      myPipsResultSecond.innerHTML = pips[1];
-      myPipsResultThird.innerHTML = pips[2];
+      changeDice("myDice01", pips[0]);
+      changeDice("myDice02", pips[1]);
+      changeDice("myDice03", pips[2]);
     } else {
-      enemyPipsResultFirst.innerHTML = pips[0];
-      enemyPipsResultSecond.innerHTML = pips[1];
-      enemyPipsResultThird.innerHTML = pips[2];
+      changeDice("enemyDice01", pips[0]);
+      changeDice("enemyDice02", pips[1]);
+      changeDice("enemyDice03", pips[2]);
     }
 
     var result = hand(pips);
@@ -209,50 +215,63 @@ window.addEventListener("load", function () {
 
     return new Promise((resolve, reject) => {
 
+      var firstShake = document.getElementById("firstShake");
+      firstShake.style.display = "block";
+
       var myCandidate = [];
       var myTurnEnd = document.getElementById("myTurnEnd");
 
-      howManyTimes.innerHTML = "１回目";
-      myCandidate = shake("myTurn");
+      firstShake.addEventListener("click", () => {
 
-      if (myCandidate[0] !== "menashi") {
-        myTurnEnd.style.display = "block";
-        myTurnEnd.addEventListener("click", () => {
-          myTurnEnd.style.display = "none";
-          resolve(myCandidate);
-        })
-      } else {
-        shakeAgain.style.display = "block";
-        shakeAgain.addEventListener("click", () => {
+        firstShake.style.display = "none";
+        howManyTimes.innerHTML = "１回目";
+        myCandidate = shake("myTurn");
 
-          howManyTimes.innerHTML = "２回目";
+        if (myCandidate[0] !== "menashi") {
           shakeAgain.style.display = "none";
-          myCandidate = shake("myTurn");
+          myTurnEnd.style.display = "block";
+          myTurnEnd.addEventListener("click", () => {
+            myHand.innerHTML = myCandidate[0];
+            myTurnEnd.style.display = "none";
+            resolve(myCandidate);
+          })
+        } else {
+          shakeAgain.style.display = "block";
+          myTurnEnd.style.display = "none";
+          shakeAgain.addEventListener("click", () => {
 
-          if (myCandidate[0] !== "menashi") {
-            myTurnEnd.style.display = "block";
-            myTurnEnd.addEventListener("click", () => {
-              myTurnEnd.style.display = "none";
-              resolve(myCandidate);
-            })
-          } else {
-            shakeAgain.style.display = "block";
-            shakeAgain.addEventListener("click", () => {
+            howManyTimes.innerHTML = "２回目";
+            shakeAgain.style.display = "none";
+            myCandidate = shake("myTurn");
 
-              howManyTimes.innerHTML = "３回目";
+            if (myCandidate[0] !== "menashi") {
               shakeAgain.style.display = "none";
-              myCandidate = shake("myTurn");
               myTurnEnd.style.display = "block";
               myTurnEnd.addEventListener("click", () => {
+                myHand.innerHTML = myCandidate[0];
                 myTurnEnd.style.display = "none";
                 resolve(myCandidate);
+              })
+            } else {
+              myTurnEnd.style.display = "none";
+              shakeAgain.style.display = "block";
+              shakeAgain.addEventListener("click", () => {
+
+                howManyTimes.innerHTML = "３回目";
+                shakeAgain.style.display = "none";
+                myCandidate = shake("myTurn");
+                myTurnEnd.style.display = "block";
+                myTurnEnd.addEventListener("click", () => {
+                  myHand.innerHTML = myCandidate[0];
+                  myTurnEnd.style.display = "none";
+                  resolve(myCandidate);
+                });
               });
-            });
-          }
-        });
+            }
+          });
 
-      }
-
+        }
+      });
     });
 
   };
@@ -303,6 +322,13 @@ window.addEventListener("load", function () {
   function game(coin, betCoin) {
     return new Promise(function (resolve, reject) {
       start.style.display = "none";
+      
+      changeDice("myDice01", 7);
+      changeDice("myDice02",7);
+      changeDice("myDice03",7);
+      changeDice("enemyDice01",7);
+      changeDice("enemyDice02",7);
+      changeDice("enemyDice03",7);
 
       myTurn().then((myResult) => {
         myHand = myResult;

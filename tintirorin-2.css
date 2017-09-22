@@ -92,10 +92,26 @@ h1 {
 }
 
 #clear {
+  position: fixed;
+  top: 0;
+  left: 0;
   display: none;
+  z-index: 40;
 }
 
 #gameOver {
+  position: fixed;
+  top: 0;
+  left: 0;
+  display: none;
+  z-index: 40;
+}
+
+#howManyTimes {
+  font-size: 40px;
+}
+
+#firstShake {
   display: none;
 }
 
@@ -116,4 +132,100 @@ h1 {
   margin-top: 25px;
   margin-left: -26px;
   line-height: 250%;
+}
+
+#me {
+  position: relative;
+  top: 20px;
+  left: -20px;
+  float: left;
+}
+
+#enemy{
+  position: relative;
+  float: right;
+  top: 20px;
+  left: 20px;
+}
+
+
+.myDices {
+  width: 100px;
+  height: 100px;
+}
+
+.enemyDices {
+  width: 100px;
+  height: 100px;
+}
+
+#myDice03 {
+  margin-right: 3.75px;
+}
+
+#enemyDice03 {
+  margin-right: 3.75px;
+}
+
+#start {
+  bottom: 300px;
+  font-size: 40px;
+  position: relative;
+  display: inline-block;
+  padding: 0.25em 0.5em;
+  text-decoration: none;
+  color: #FFF;
+  background: #53b8e0;
+  border-radius: 4px;
+  box-shadow: inset 0 2px 0 rgba(255,255,255,0.2), inset 0 -2px 0 rgba(0, 0, 0, 0.05);
+  font-weight: bold;
+  border: solid 2px #d27d00;
+}
+
+#start:focus {
+  outline: none;
+}
+
+
+#start:active {
+  box-shadow: 0 0 2px rgba(0, 0, 0, 0.30);
+}
+
+.niceDesign {
+  bottom: 80px;
+  font-size: 35px;
+  position: relative;
+  display: inline-block;
+  padding: 0.25em 0.5em;
+  text-decoration: none;
+  color: #FFF;
+  background: #f13b14;
+  border-bottom: solid 2px #ff0000;
+  border-radius: 4px;
+  box-shadow: inset 0 2px 0 rgba(0,0,0,0.2), 0 2px 2px rgba(0, 0, 0, 0.19);
+  font-weight: bold;
+  border: solid 2px #d27d00;
+}
+
+#niceDesign:active {
+  box-shadow: 0 0 2px rgba(0, 0, 0, 0.30);
+}Î
+
+#myTurnEnd {
+  background: #3f3f3f;
+}
+
+#ruleBoard {
+  width: 950px;
+  height: 173px;
+  position: relative;
+  background: rgba(255, 255, 255, 0.75);
+  text-align: center;
+  top: 330px;
+}
+
+#rule {
+  right: 400px;
+  width: 500px;
+  font-size: 20px;
 }

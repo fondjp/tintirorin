@@ -4,18 +4,38 @@
     <meta charset="UTF-8">
     <link rel="stylesheet" type="text/css" href="tintirorin-2.css">
     <script src="./tintirorin-2.js"></script>
+    <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js"></script>
     <title>フォンドのチンチロリン</title>
   </head>
   <body>
     <img src="./HANCHO.jpg" id="clear">
+    <img src="./HANCHO2.jpg" id="gameOver">
     <div id="base">
       <h1>あっとうてきチンチロリンッ！</h1>
       <div id="gameBoard">
         <p id="myCoin"></p>
 
         <p id="playerHand">相手のサイコロ<br><br><br><br><br>自分のサイコロ</p>
-
+        
         <div id="whiteBoard">
+
+          <div id="me">
+            <img class="myDices" id="myDice01" src="./white.png">
+            <br>
+            <img class="myDices" id="myDice02" src="./white.png">
+            <br>
+            <img class="myDices" id="myDice03" src="./white.png">
+          </div>
+
+          <div id="enemy">
+            <img class="enemyDices" id="enemyDice01" src="./white.png">
+            <br>
+            <img class="enemyDices" id="enemyDice02" src="./white.png">
+            <br>
+            <img class="enemyDices" id="enemyDice03" src="./white.png">
+          </div>
+
+          <div id="enemyPips"></div>
 
           <p id="howManyTimes"></p>
           <p id="enemyHowManyTimes"></p>
@@ -27,25 +47,26 @@
           <p id="enemyPipsResultFirst"></p>
           <p id="enemyPipsResultSecond"></p>
           <p id="enemyPipsResultThird"></p>
-        
-          <button  id="shakeAgain">もう一度振る</button>
-          <button  id="myTurnEnd">ターン終了</button>
 
           <p id="myHand"></p>
           <p id="enemyHand"></p>
           <p id="isWon"></p>
           <p id="again"></p>
           <p id="errorLog"></p>
-
-        <img src="./HANCHO.jpg" id="clear">
-        <img src="./HANCHO2.jpg" id="gameOver">
       </div>
 
       <div id="coinBoard">
         <p id="bet">賭け金：<input type="text" id="betCoin" value=""> ペリカ</p>
       </div>
-      
-      <button  id="start">賭け金を決定っ・・・！</button>
+      <button  id="start">賭け金を決定！開戦っ・・・！</button>
+    </div>
+
+    <button class="niceDesign" id="firstShake">サイコロを振る</button>
+    <button class="niceDesign" id="shakeAgain">もう一度振る</button>
+    <button class="niceDesign" id="myTurnEnd">ターン終了</button>
+
+    <div id="ruleBoard">
+      <p id="rule">このゲームはサイコロ３つを同時に振り、その出目の強さで勝敗を決める。<br>おい、ふざけるなぁ</p>
     </div>
   </body>
 </html>
