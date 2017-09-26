@@ -13,7 +13,7 @@ body {
 
 #base {
   width: 950px;
-  height: 875px;
+  height: 1050px;
   background: rgba(255, 128, 0, 0.75);
   text-align: center;
 }
@@ -92,6 +92,7 @@ h1 {
 }
 
 #clear {
+  width: 105%;
   position: fixed;
   top: 0;
   left: 0;
@@ -100,6 +101,7 @@ h1 {
 }
 
 #gameOver {
+  width: 105%;
   position: fixed;
   top: 0;
   left: 0;
@@ -109,7 +111,14 @@ h1 {
 
 #howManyTimes {
   font-size: 40px;
+  color: #0000ff;
 }
+
+#enemyHowManyTimes {
+  font-size: 40px;
+  color: #ff0000;
+}
+
 
 #firstShake {
   display: none;
@@ -209,23 +218,49 @@ h1 {
 
 #niceDesign:active {
   box-shadow: 0 0 2px rgba(0, 0, 0, 0.30);
-}Î
+}
 
 #myTurnEnd {
   background: #3f3f3f;
 }
 
-#ruleBoard {
-  width: 950px;
-  height: 173px;
-  position: relative;
-  background: rgba(255, 255, 255, 0.75);
-  text-align: center;
-  top: 330px;
+#displayMyHand {
+  font-size: 50px;
+  font-weight: bold;
+  -webkit-text-orientation: upright;
+  text-orientation: upright;
+  writing-mode: vertical-rl;
+  margin-left: -26px;
 }
 
-#rule {
-  right: 400px;
-  width: 500px;
-  font-size: 20px;
+#displayEnemyHand {
+  position: relative;
+  bottom: 200px;
+  left: 105px;
+  font-size: 50px;
+  font-weight: bold;
+  -webkit-text-orientation: upright;
+  text-orientation: upright;
+  writing-mode: vertical-rl;
+}
+
+#isWon {
+  font-family: "けいふぉんと";
+  position: relative;
+  bottom: 350px;
+  font-size: 50px;
+  -webkit-text-orientation: upright;
+  text-orientation: upright;
+  writing-mode: vertical-rl;
+}
+
+#displayGap {
+  position: relative;
+  bottom: 250px;
+  font-size: 50px;
+  font-weight: bold;
+  font-family: "けいふぉんと";
+  color: #ffff00;
+  -webkit-text-stroke-color: #000000;
+  -webkit-text-stroke-width: 1px;
 }

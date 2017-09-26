@@ -16,8 +16,6 @@ window.addEventListener("load", function () {
     var howManyTimes = document.getElementById("howManyTimes");
     var enemyHowManyTimes = document.getElementById("enemyHowManyTimes");
     var again = document.getElementById("again");
-    var myHand = document.getElementById("myHand");
-    var enemyHand = document.getElementById("enemyHand");
     var isWon = document.getElementById("isWon");
     var errorLog = document.getElementById("errorLog");
     var myPipsResultFirst = document.getElementById("myPipsResultFirst");
@@ -27,6 +25,9 @@ window.addEventListener("load", function () {
     var enemyPipsResultSecond = document.getElementById("enemyPipsResultSecond");
     var enemyPipsResultThird = document.getElementById("enemyPipsResultThird");
     var shakeAgain = document.getElementById("shakeAgain");
+    var displayGap = document.getElementById("displayGap");
+    var displayMyHand = document.getElementById("displayMyHand");
+    var displayEnemyhand = document.getElementById("displayEnemyHand");
 
     betCoin = parseInt(betCoin);
 
@@ -49,9 +50,11 @@ window.addEventListener("load", function () {
       enemyPipsResultFirst.innerHTML = "";
       enemyPipsResultSecond.innerHTML = "";
       enemyPipsResultThird.innerHTML = "";
-      myHand.innerHTML = "";
-      enemyHand.innerHTML = "";
       isWon.innerHTML = "";
+      displayGap.innerHTML = "";
+      displayEnemyHand.innerHTML = "";
+      displayMyHand.innerHTML = "";
+
       errorLog.innerHTML = "";
       start.style.display = "none";
       console.log("ゲーム開始前のコインは" + coin);
@@ -180,16 +183,27 @@ window.addEventListener("load", function () {
   function payout(magnification, coin, betCoin) {
 
     if (magnification === 0) {
-      isWon.innerHTML = "引き分けです。";
+      isWon.innerHTML = "分け";
     } else if (magnification >= 1) {
-      isWon.innerHTML = "あなたの勝ちです！";
+      isWon.innerHTML = "<font color='#ff0000'>勝ち</font>";
     } else {
-      isWon.innerHTML = "あなたの負けです…";
+      isWon.innerHTML = "<font color='#0000ff'>負け</font>";
     }
 
-    console.log("function payout coin, betCoin is... " + coin + ", " + betCoin)
+    var tmp = coin;
 
     coin = coin + betCoin * magnification;
+
+    var gap = coin - tmp;
+
+    if (gap > 0) {
+      displayGap.innerHTML = "＋" + gap + "ペリカ";
+    } else if (gap < 0) {
+      displayGap.innerHTML = "ー" + Math.abs(gap) + "ペリカ";
+    } else {
+      displayGap.innerHTML = "±０ペリカ"
+    }
+
 
     console.log("function payout calclated coin is... " + coin);
     console.log("function payout magnification is... " + magnification);
@@ -226,29 +240,27 @@ window.addEventListener("load", function () {
 
     switch (hand) {
       case "hifumi":
-        draw = "ヒフミ";
+        draw = "ヒフミ　";
         break;
       case "shigoro":
-        draw = "シゴロ";
+        draw = "シゴロ　";
         break;
       case "zoro":
-        draw = (point / 10000) + "ゾロ";
+        draw = (point / 10000) + "ゾロ　";
         break;
       case "deme":
         draw = point + "の出目";
         break;
-      case "menashi":
-        draw = "目無し";
+      default:
+        draw = "目無し　";
         break;
     }
 
     if (isMyTurn === "myTurn") {
-      myHand.innerHTML = draw;
+      return draw;
     } else {
-      enemyHand.innerHTML = draw;
+      return draw;
     }
-
-    return;
 
   }
 
@@ -272,10 +284,9 @@ window.addEventListener("load", function () {
           shakeAgain.style.display = "none";
           myTurnEnd.style.display = "block";
           myTurnEnd.addEventListener("click", () => {
-            drawHand("myTurn", myCandidate);
             myTurnEnd.style.display = "none";
             resolve(myCandidate);
-          })
+          });
         } else {
           shakeAgain.style.display = "block";
           myTurnEnd.style.display = "none";
@@ -289,10 +300,9 @@ window.addEventListener("load", function () {
               shakeAgain.style.display = "none";
               myTurnEnd.style.display = "block";
               myTurnEnd.addEventListener("click", () => {
-                drawHand("myTurn", myCandidate);
                 myTurnEnd.style.display = "none";
                 resolve(myCandidate);
-              })
+              });
             } else {
               myTurnEnd.style.display = "none";
               shakeAgain.style.display = "block";
@@ -303,7 +313,6 @@ window.addEventListener("load", function () {
                 myCandidate = shake("myTurn");
                 myTurnEnd.style.display = "block";
                 myTurnEnd.addEventListener("click", () => {
-                  drawHand("myTurn", myCandidate);
                   myTurnEnd.style.display = "none";
                   resolve(myCandidate);
                 });
@@ -331,8 +340,9 @@ window.addEventListener("load", function () {
 
       var enemyCandidate = [];
 
-      setTimeoutAsync(2500)
+      setTimeoutAsync(1500)
         .then(() => {
+          howManyTimes.innerHTML = "";
           enemyHowManyTimes.innerHTML = "１回目";
           enemyCandidate = shake("enemyTurn");
           if (enemyCandidate[0] === "menashi") {
@@ -345,16 +355,13 @@ window.addEventListener("load", function () {
                     .then(() => {
                       enemyHowManyTimes.innerHTML = "３回目";
                       enemyCandidate = shake("enemyTurn");
-                      drawHand("enemyTurn", enemyCandidate);
                       resolve(enemyCandidate);
                     });
                 } else {
-                  drawHand("enemyTurn", enemyCandidate);
                   resolve(enemyCandidate);
                 }
               });
           } else {
-            drawHand("enemyTurn", enemyCandidate);
             resolve(enemyCandidate);
           }
         });
@@ -376,16 +383,15 @@ window.addEventListener("load", function () {
 
       myTurn().then((myResult) => {
         myHand = myResult;
+        displayMyHand.innerHTML = drawHand("myTurn", myResult);
         console.log(myHand);
         enemyTurn().then((enemyResult) => {
+          displayEnemyHand.innerHTML = drawHand("enemyTurn", enemyResult);
           enemyHand = enemyResult;
           console.log(enemyHand);
-          setTimeoutAsync(1000)
+          setTimeoutAsync(2000)
             .then(() => {
-              myHand.innerHTML = myHand[0];
-              enemyHand.innerHTML = enemyHand[0];
               coin = payout(battle(myHand, enemyHand), coin, betCoin);
-              console.log("function game coin is... " + coin);
               resolve(coin);
             });
         });
