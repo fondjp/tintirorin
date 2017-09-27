@@ -57,10 +57,8 @@ window.addEventListener("load", function () {
 
       errorLog.innerHTML = "";
       start.style.display = "none";
-      console.log("ゲーム開始前のコインは" + coin);
       game(coin, betCoin).then(function (afterCoin) {
         myCoin.innerHTML = "現在の所持金：" + afterCoin + "ペリカ";
-        console.log("ゲーム終了時のコインは" + afterCoin);
         coin = afterCoin;
         start.style.display = "block";
       })
@@ -204,10 +202,6 @@ window.addEventListener("load", function () {
       displayGap.innerHTML = "±０ペリカ"
     }
 
-
-    console.log("function payout calclated coin is... " + coin);
-    console.log("function payout magnification is... " + magnification);
-    console.log("function payout betCoin is..." + betCoin);
     return coin;
 
   };
@@ -384,11 +378,9 @@ window.addEventListener("load", function () {
       myTurn().then((myResult) => {
         myHand = myResult;
         displayMyHand.innerHTML = drawHand("myTurn", myResult);
-        console.log(myHand);
         enemyTurn().then((enemyResult) => {
           displayEnemyHand.innerHTML = drawHand("enemyTurn", enemyResult);
           enemyHand = enemyResult;
-          console.log(enemyHand);
           setTimeoutAsync(2000)
             .then(() => {
               coin = payout(battle(myHand, enemyHand), coin, betCoin);
