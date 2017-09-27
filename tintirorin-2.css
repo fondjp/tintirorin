@@ -91,17 +91,9 @@ h1 {
   color: #ff0000;
 }
 
-#clear {
+#clear, #gameOver {
   width: 105%;
-  position: fixed;
-  top: 0;
-  left: 0;
-  display: none;
-  z-index: 40;
-}
-
-#gameOver {
-  width: 105%;
+  height: 105%;
   position: fixed;
   top: 0;
   left: 0;
