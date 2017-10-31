@@ -2,12 +2,13 @@ var coin = 1000;
 
 window.addEventListener("load", function () {
 
-  var dices = ["./sai01.jpg", "./sai02.jpg", "./sai03.jpg", "./sai04.jpg", "./sai05.jpg", "./sai06.jpg", "./white.png"]
+  var dices = ["./image/sai01.jpg", "./image/sai02.jpg", "./image/sai03.jpg",
+               "./image/sai04.jpg", "./image/sai05.jpg", "./image/sai06.jpg", "./image/white.png"];
 
   function changeDice(id, number) {
     $("#" + id).attr("src", dices[number - 1]);
   };
-
+ 
   var start = document.getElementById("start");
 
   start.addEventListener("click", function () {
@@ -61,7 +62,7 @@ window.addEventListener("load", function () {
         myCoin.innerHTML = "現在の所持金：" + afterCoin + "ペリカ";
         coin = afterCoin;
         start.style.display = "block";
-      })
+      });
     }
 
   });
@@ -256,7 +257,7 @@ window.addEventListener("load", function () {
       return draw;
     }
 
-  }
+  };
 
   function myTurn() {
 
@@ -326,7 +327,7 @@ window.addEventListener("load", function () {
       setTimeout(resolve, delay);
     });
 
-  }
+  };
 
   function enemyTurn() {
 
